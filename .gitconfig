@@ -1,0 +1,9 @@
+[user]
+	name = Micah Folsom
+  email = micah.folsom@pnnl.gov
+[core]
+  editor = /usr/bin/vim
+[color]
+  ui = auto
+[alias]
+  slog = log --oneline --topo-order --graph --pretty=format:"%C(yellow)%h\\ %w(70,1,2)%Creset%s%Cblue\\ [%cn]%Cred%d" 
