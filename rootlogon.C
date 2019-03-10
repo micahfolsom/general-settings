@@ -1,130 +1,172 @@
-{
-	////////////////////////////////////////////////////////////////////////
-	//
-	// Mike's very tasteful style.
-	//
-	////////////////////////////////////////////////////////////////////////
+// To set this as default, you need a .rootrc file in your home directory,
+// containing the following line:
+// Rint.Logon: /full/path/to/rootlogon.C
+#ifndef ROOTLOGON_C
+#define ROOTLOGON_C
+// ROOT
+#include "TColor.h"
+#include "TH1.h"
+#include "TLatex.h"
+#include "TROOT.h"
+#include "TStyle.h"
 
-	gStyle->Reset();
+void rootlogon() {
+  // NCC libs
+  /*gSystem->AddIncludePath("/home/mdi/Code/thesis/code/viewer/include");
+  gSystem->Load("/home/mdi/Code/thesis/code/vbuild/lib/libnccviewer.so");
 
-	// Turn off some borders
-	gStyle->SetCanvasBorderMode(0);
-	gStyle->SetFrameBorderMode(0);
-	gStyle->SetPadBorderMode(0);
-	gStyle->SetDrawBorder(0);
-	gStyle->SetCanvasBorderSize(0);
-	gStyle->SetFrameBorderSize(0);
-	gStyle->SetPadBorderSize(1);
-	gStyle->SetTitleBorderSize(0);
+  // SVSC simulation support libs
+  gSystem->AddIncludePath("/data/micah/SVSC/SVSCLibs/Includes/");
+  gSystem->Load("/data/micah/SVSC/SVSCLibs/CompiledLibs/"
+                "libSimulationSupportLib.so");
+  gSystem->Load("/data/micah/SVSC/SVSCLibs/CompiledLibs/"
+                "libSupportLib.so");
+  gSystem->Load("/data/micah/SVSC/SVSCLibs/CompiledLibs/"
+                "libExperimentalDetectorsLib.so");
+  */
 
-	// Say it in black and white!
-	gStyle->SetAxisColor(1, "xyz");
-	gStyle->SetCanvasColor(0);
-	gStyle->SetFrameFillColor(0);
-	gStyle->SetFrameLineColor(1);
-	gStyle->SetHistFillColor(0);
-	gStyle->SetHistLineColor(1);
-	//gStyle->SetPadColor(1);
-	gStyle->SetPadColor(kWhite);
-	gStyle->SetStatColor(0);
-	gStyle->SetStatTextColor(1);
-	gStyle->SetTitleColor(1);
-	gStyle->SetTitleTextColor(1);
-	gStyle->SetLabelColor(1,"xyz");
-	// Show functions in red...
-	gStyle->SetFuncColor(2);
+  // Defaults to classic style, but that's OK, we can fix it
+  TStyle* novaStyle = new TStyle("novaStyle", "NOvA Style");
 
-	// Set the size of the default canvas
-	// 600x500 looks almost square
-	gStyle->SetCanvasDefH(1200);
-	gStyle->SetCanvasDefW(1000);
-	gStyle->SetCanvasDefX(10);
-	gStyle->SetCanvasDefY(10);
+  // Centre title
+  novaStyle->SetTitleAlign(22);
+  novaStyle->SetTitleX(.5);
+  novaStyle->SetTitleY(.95);
+  novaStyle->SetTitleBorderSize(0);
 
-	// Fonts:  I use Helvetica, upright, normal
-	//         I sort of wish they had something like "HIGZ portable" of PAW
-	int style_label_font=42;
-	gStyle->SetLabelFont(style_label_font,"xyz");
-	gStyle->SetLabelSize(0.020,"xyz");
-	gStyle->SetLabelOffset(0.010,"xyz");
-	gStyle->SetStatFont(style_label_font);
-	gStyle->SetTitleFont(style_label_font,"xyz"); // axis titles
-	gStyle->SetTitleFont(style_label_font,"h"); // histogram title
-	gStyle->SetTitleSize(0.05,"xyz"); // axis titles
-	gStyle->SetTitleSize(0.05,"h"); // histogram title
-	gStyle->SetTitleOffset(1.1,"x");
-	gStyle->SetTitleOffset(1.3,"y");
-	gStyle->SetStripDecimals(kFALSE); // if we have 1.5 do not set 1.0 -> 1
-	gStyle->SetTitleX(0.12); // spot where histogram title goes
-	gStyle->SetTitleW(0.78); // width computed so that title is centered
-	TGaxis::SetMaxDigits(4); // restrict the number of digits in labels
+  // No info box
+  novaStyle->SetOptStat(0);
 
-	// Set Line Widths
-	gStyle->SetFrameLineWidth(2);
-	gStyle->SetFuncWidth(2);
-	gStyle->SetHistLineWidth(2);
+  //set the background color to white
+  novaStyle->SetFillColor(10);
+  novaStyle->SetFrameFillColor(10);
+  novaStyle->SetCanvasColor(10);
+  novaStyle->SetPadColor(10);
+  novaStyle->SetTitleFillColor(0);
+  novaStyle->SetStatColor(10);
 
-	// Set all fill styles to be empty and line styles to be solid
-	gStyle->SetFrameFillStyle(0);
-	gStyle->SetHistFillStyle(0000);
-	gStyle->SetFrameLineStyle(0);
-	gStyle->SetHistLineStyle(0);
-	gStyle->SetTitleStyle(0);
-	gStyle->SetFuncStyle(1);
+  // Don't put a colored frame around the plots
+  novaStyle->SetFrameBorderMode(0);
+  novaStyle->SetCanvasBorderMode(0);
+  novaStyle->SetPadBorderMode(0);
 
-	// Set margins -- I like to shift the plot a little up and to the
-	// right to make more room for axis labels
-	gStyle->SetPadTopMargin(0.08);
-	gStyle->SetPadBottomMargin(0.12);
-	gStyle->SetPadLeftMargin(0.15);
-	gStyle->SetPadRightMargin(0.15);
+  // Set the default line color for a fit function to be red
+  novaStyle->SetFuncColor(kRed);
 
-	// Set Data/Stat/... and other options
-	gStyle->SetOptDate(0);
-	gStyle->SetDateX(0.01);
-	gStyle->SetDateY(0.01);
-	gStyle->SetOptFile(0);
-	gStyle->SetOptFit(0);
-	gStyle->SetOptLogx(0);
-	gStyle->SetOptLogy(0);
-	gStyle->SetOptLogz(0);
-	gStyle->SetOptStat(000000000);// no histogram title
-	gStyle->SetOptTitle(1);
-	gStyle->SetStatFormat("6.4f");
-	gStyle->SetFitFormat("6.4f");
-	gStyle->SetStatStyle(0); // hollow
-	//gStyle->SetStatStyle(1001); // filled
-	gStyle->SetStatBorderSize(0);
-	gStyle->SetStatW(0.25);
-	gStyle->SetStatH(0.125);
-	//gStyle->SetStatX(0.90);
-	//gStyle->SetStatY(0.90);
-	gStyle->SetStatX(1.0-gStyle->GetPadRightMargin()-0.02);
-	gStyle->SetStatY(1.0-gStyle->GetPadTopMargin()-0.02);
-	// Set tick marks and turn off grids
-	//gStyle->SetNdivisions(1005,"xyz");
-	gStyle->SetNdivisions(510,"xyz");
-	gStyle->SetPadTickX(1);
-	gStyle->SetPadTickY(1);
-	gStyle->SetTickLength(0.02,"xyz");
-	gStyle->SetPadGridX(0);
-	gStyle->SetPadGridY(0);
+  // Marker settings
+  //  novaStyle->SetMarkerStyle(kFullCircle);
 
-	// no supressed zeroes!
-	gStyle->SetHistMinimumZero(kTRUE);
+  // No border on legends
+  novaStyle->SetLegendBorderSize(0);
 
+  // Disabled for violating NOvA style guidelines
+  // Scientific notation on axes
+  TGaxis::SetMaxDigits(3);
 
-	// Set paper size for life in the US
-	gStyle->SetPaperSize(TStyle::kUSLetter);
+  // Axis titles
+  novaStyle->SetTitleSize(.055, "xyz");
+  novaStyle->SetTitleOffset(.8, "xyz");
+  // More space for y-axis to avoid clashing with big numbers
+  novaStyle->SetTitleOffset(.9, "y");
+  // This applies the same settings to the overall plot title
+  novaStyle->SetTitleSize(.055, "");
+  novaStyle->SetTitleOffset(.8, "");
+  // Axis labels (numbering)
+  novaStyle->SetLabelSize(.04, "xyz");
+  novaStyle->SetLabelOffset(.005, "xyz");
 
-	// use a pretty palette for color plots
-	gStyle->SetPalette(1,0);
+  // Prevent ROOT from occasionally automatically zero-suppressing
+  novaStyle->SetHistMinimumZero();
 
-	//gStyle->SetLabelColor(1,"xyz");
-	// Force this style on all histograms
-	//gROOT->ForceStyle();
-  
-  //gSystem->AddIncludePath("~/amc/root_objects/include");
-  //gSystem->AddIncludePath("~/amc/root_objects/build/lib");
-	//gSystem->Load("~/amc/root_objects/build/lib/libamcroot.so");
+  // Thicker lines
+  novaStyle->SetHistLineWidth(1);
+  novaStyle->SetFrameLineWidth(2);
+  novaStyle->SetFuncWidth(2);
+
+  // Set the number of tick marks to show
+  novaStyle->SetNdivisions(506, "xyz");
+
+  // Set the tick mark style
+  novaStyle->SetPadTickX(1);
+  novaStyle->SetPadTickY(1);
+
+  // Fonts
+  const int kNovaFont = 42;
+  novaStyle->SetStatFont(kNovaFont);
+  novaStyle->SetLabelFont(kNovaFont, "xyz");
+  novaStyle->SetTitleFont(kNovaFont, "xyz");
+  novaStyle->SetTitleFont(kNovaFont, ""); // Apply same setting to plot titles
+  novaStyle->SetTextFont(kNovaFont);
+  novaStyle->SetLegendFont(kNovaFont);
+
+  // Get moodier colours for colz
+  const Int_t NRGBs = 5;
+  const Int_t NCont = 255;
+  Double_t stops[NRGBs] = { 0.00, 0.34, 0.61, 0.84, 1.00 };
+  Double_t red[NRGBs]   = { 0.00, 0.00, 0.87, 1.00, 0.51 };
+  Double_t green[NRGBs] = { 0.00, 0.81, 1.00, 0.20, 0.00 };
+  Double_t blue[NRGBs]  = { 0.51, 1.00, 0.12, 0.00, 0.00 };
+  TColor::CreateGradientColorTable(NRGBs, stops, red, green, blue, NCont);
+  novaStyle->SetNumberContours(NCont);
+
+  gROOT->SetStyle("novaStyle");
+
+  // Uncomment this line if you want to force all plots loaded from files
+  // to use this same style
+  gROOT->ForceStyle();
 }
+
+// Put a "NOvA Preliminary" tag in the corner
+void Preliminary()
+{
+  TLatex* prelim = new TLatex(.9, .95, "NOvA Preliminary");
+  prelim->SetTextColor(kBlue);
+  prelim->SetNDC();
+  prelim->SetTextSize(2/30.);
+  prelim->SetTextAlign(32);
+  prelim->Draw();
+}
+
+// Put a "NOvA Preliminary" tag on the right
+void PreliminarySide()
+{
+  TLatex* prelim = new TLatex(.93, .9, "NOvA Preliminary");
+  prelim->SetTextColor(kBlue);
+  prelim->SetNDC();
+  prelim->SetTextSize(2/30.);
+  prelim->SetTextAngle(270);
+  prelim->SetTextAlign(12);
+  prelim->Draw();
+}
+
+// Put a "NOvA Simulation" tag in the corner
+void Simulation()
+{
+  TLatex* prelim = new TLatex(.9, .95, "NOvA Simulation");
+  prelim->SetTextColor(kGray+1);
+  prelim->SetNDC();
+  prelim->SetTextSize(2/30.);
+  prelim->SetTextAlign(32);
+  prelim->Draw();
+}
+
+// Put a "NOvA Simulation" tag on the right
+void SimulationSide()
+{
+  TLatex* prelim = new TLatex(.93, .9, "NOvA Simulation");
+  prelim->SetTextColor(kGray+1);
+  prelim->SetNDC();
+  prelim->SetTextSize(2/30.);
+  prelim->SetTextAngle(270);
+  prelim->SetTextAlign(12);
+  prelim->Draw();
+}
+
+void CenterTitles(TH1* histo)
+{
+  histo->GetXaxis()->CenterTitle();
+  histo->GetYaxis()->CenterTitle();
+  histo->GetZaxis()->CenterTitle();  
+}
+
+#endif
