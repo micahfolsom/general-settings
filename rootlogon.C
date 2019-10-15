@@ -10,21 +10,45 @@
 #include "TROOT.h"
 #include "TStyle.h"
 
+// Custom color definitions, from
+// http://colorbrewer2.org/#type=qualitative&scheme=Paired&n=12
+// minus the yellow and re-ordered
+int kCustom;
+int const NCUSTOMCOLORS = 11;
+int const kCustomRed = 0;
+int const kCustomDarkBlue = 1;
+int const kCustomDarkGreen = 2;
+int const kCustomOrange = 3;
+int const kCustomPurple = 4;
+int const kCustomBrown = 5;
+int const kCustomPink = 6;
+int const kCustomLightBlue = 7;
+int const kCustomLightGreen = 8;
+int const kCustomYellow = 9;
+int const kCustomLavender = 10;
+
 void rootlogon() {
   // NCC libs
-  /*gSystem->AddIncludePath("/home/mdi/Code/thesis/code/viewer/include");
-  gSystem->Load("/home/mdi/Code/thesis/code/vbuild/lib/libnccviewer.so");
+  //gSystem->AddIncludePath("/home/mdi/Code/thesis/code/viewer/include");
+  //gSystem->Load("/home/mdi/Code/thesis/code/vbuild/lib/libnccviewer.so");
 
   // SVSC simulation support libs
   gSystem->AddIncludePath("/data/micah/SVSC/SVSCLibs/Includes/");
   gSystem->Load("/data/micah/SVSC/SVSCLibs/CompiledLibs/"
-                "libSimulationSupportLib.so");
-  gSystem->Load("/data/micah/SVSC/SVSCLibs/CompiledLibs/"
                 "libSupportLib.so");
   gSystem->Load("/data/micah/SVSC/SVSCLibs/CompiledLibs/"
+                "libSimulationSupportLib.so");
+  gSystem->Load("/data/micah/SVSC/SVSCLibs/CompiledLibs/"
+                "libAnalysisLib.so");
+  gSystem->Load("/data/micah/SVSC/SVSCLibs/CompiledLibs/"
+                "libImagingLib.so");
+  gSystem->Load("/data/micah/SVSC/SVSCLibs/CompiledLibs/"
                 "libExperimentalDetectorsLib.so");
-  */
-
+  
+  // DANISim
+  //gSystem->AddIncludePath("/home/mdi/Code/danisim/danilib/include");
+  //gSystem->Load("/home/mdi/Code/ds-build/danilib/libDANIlib.so");
+  
   // Defaults to classic style, but that's OK, we can fix it
   TStyle* novaStyle = new TStyle("novaStyle", "NOvA Style");
 
@@ -53,9 +77,6 @@ void rootlogon() {
   // Set the default line color for a fit function to be red
   novaStyle->SetFuncColor(kRed);
 
-  // Marker settings
-  //  novaStyle->SetMarkerStyle(kFullCircle);
-
   // No border on legends
   novaStyle->SetLegendBorderSize(0);
 
@@ -67,7 +88,7 @@ void rootlogon() {
   novaStyle->SetTitleSize(.055, "xyz");
   novaStyle->SetTitleOffset(.8, "xyz");
   // More space for y-axis to avoid clashing with big numbers
-  novaStyle->SetTitleOffset(.9, "y");
+  novaStyle->SetTitleOffset(.8, "y");
   // This applies the same settings to the overall plot title
   novaStyle->SetTitleSize(.055, "");
   novaStyle->SetTitleOffset(.8, "");
@@ -79,7 +100,7 @@ void rootlogon() {
   novaStyle->SetHistMinimumZero();
 
   // Thicker lines
-  novaStyle->SetHistLineWidth(1);
+  novaStyle->SetHistLineWidth(2);
   novaStyle->SetFrameLineWidth(2);
   novaStyle->SetFuncWidth(2);
 
@@ -99,27 +120,73 @@ void rootlogon() {
   novaStyle->SetTextFont(kNovaFont);
   novaStyle->SetLegendFont(kNovaFont);
 
-  // Get moodier colours for colz
-  const Int_t NRGBs = 5;
-  const Int_t NCont = 255;
-  Double_t stops[NRGBs] = { 0.00, 0.34, 0.61, 0.84, 1.00 };
-  Double_t red[NRGBs]   = { 0.00, 0.00, 0.87, 1.00, 0.51 };
-  Double_t green[NRGBs] = { 0.00, 0.81, 1.00, 0.20, 0.00 };
-  Double_t blue[NRGBs]  = { 0.51, 1.00, 0.12, 0.00, 0.00 };
-  TColor::CreateGradientColorTable(NRGBs, stops, red, green, blue, NCont);
-  novaStyle->SetNumberContours(NCont);
+  // Replaced nova "moodier" colors with viridis (112) or cividis (113)
+  // viridis is colorblind friendly and cividis is colorblind/color
+  // vision deficiency-friendly
+  novaStyle->SetPalette(113);
+
+  // Custom colors for plotting a bunch (up to 12, including kBlack) of
+  // distinct things, like histograms
+  for (int i=0;i < NCUSTOMCOLORS;++i) {
+    auto index = TColor::GetFreeColorIndex();
+    switch (i) {
+      // Red
+      case kCustomRed:
+        kCustom = index;
+        new TColor(index, 227/255., 26/255., 28/255.);
+        break;
+      // Dark blue
+      case kCustomDarkBlue:
+        new TColor(index, 31/255., 120/255., 180/255.);
+        break;
+      // Dark green
+      case kCustomDarkGreen:
+        new TColor(index, 51/255., 160/255., 44/255.);
+        break;
+      // Orange
+      case kCustomOrange:
+        new TColor(index, 255/255., 127/255., 0.);
+        break;
+      // Purple
+      case kCustomPurple:
+        new TColor(index, 106/255., 61/255., 154/255.);
+        break;
+      // Brown
+      case kCustomBrown:
+        new TColor(index, 177/255., 89/255., 40/255.);
+        break;
+      // Pink
+      case kCustomPink:
+        new TColor(index, 251/255., 154/255., 153/255.);
+        break;
+      // Light blue
+      case kCustomLightBlue:
+        new TColor(index, 166/255., 206/255., 227/255.);
+        break;
+      // Light green
+      case kCustomLightGreen:
+        new TColor(index, 178/255., 223/255., 138/255.);
+        break;
+      // Yellow (darkish)
+      case kCustomYellow:
+        new TColor(index, 253/255., 191/255., 111/255.);
+        break;
+      // Lavender
+      case kCustomLavender:
+        new TColor(index, 202/255., 178/255., 214/255.);
+        break;
+    }
+  }
 
   gROOT->SetStyle("novaStyle");
-
   // Uncomment this line if you want to force all plots loaded from files
   // to use this same style
   gROOT->ForceStyle();
 }
 
-// Put a "NOvA Preliminary" tag in the corner
-void Preliminary()
-{
-  TLatex* prelim = new TLatex(.9, .95, "NOvA Preliminary");
+// Put a "Preliminary" tag in the corner
+void Preliminary() {
+  TLatex* prelim = new TLatex(.9, .95, "Preliminary");
   prelim->SetTextColor(kBlue);
   prelim->SetNDC();
   prelim->SetTextSize(2/30.);
@@ -127,10 +194,9 @@ void Preliminary()
   prelim->Draw();
 }
 
-// Put a "NOvA Preliminary" tag on the right
-void PreliminarySide()
-{
-  TLatex* prelim = new TLatex(.93, .9, "NOvA Preliminary");
+// Put a "Preliminary" tag on the right
+void PreliminarySide() {
+  TLatex* prelim = new TLatex(.93, .9, "Preliminary");
   prelim->SetTextColor(kBlue);
   prelim->SetNDC();
   prelim->SetTextSize(2/30.);
@@ -139,10 +205,9 @@ void PreliminarySide()
   prelim->Draw();
 }
 
-// Put a "NOvA Simulation" tag in the corner
-void Simulation()
-{
-  TLatex* prelim = new TLatex(.9, .95, "NOvA Simulation");
+// Put a "Simulation" tag in the corner
+void Simulation() {
+  TLatex* prelim = new TLatex(.9, .95, "Simulation");
   prelim->SetTextColor(kGray+1);
   prelim->SetNDC();
   prelim->SetTextSize(2/30.);
@@ -150,10 +215,9 @@ void Simulation()
   prelim->Draw();
 }
 
-// Put a "NOvA Simulation" tag on the right
-void SimulationSide()
-{
-  TLatex* prelim = new TLatex(.93, .9, "NOvA Simulation");
+// Put a "Simulation" tag on the right
+void SimulationSide() {
+  TLatex* prelim = new TLatex(.93, .9, "Simulation");
   prelim->SetTextColor(kGray+1);
   prelim->SetNDC();
   prelim->SetTextSize(2/30.);
@@ -162,8 +226,7 @@ void SimulationSide()
   prelim->Draw();
 }
 
-void CenterTitles(TH1* histo)
-{
+void CenterTitles(TH1* histo) {
   histo->GetXaxis()->CenterTitle();
   histo->GetYaxis()->CenterTitle();
   histo->GetZaxis()->CenterTitle();  
