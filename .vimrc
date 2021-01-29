@@ -2,6 +2,8 @@
 " Colors
 colorscheme molokai
 set t_Co=256
+" lol OSX
+syntax on
 " Spaces only; indentation and numbering
 set expandtab
 set shiftwidth=2
