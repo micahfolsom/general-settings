@@ -3,6 +3,7 @@
   email = micahfolsom@gmail.com
 [core]
   editor = /usr/bin/vim
+  excludesfile = ~/.gitignore_global
 [color]
   ui = auto
 [alias]
