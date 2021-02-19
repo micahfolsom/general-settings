@@ -1,2 +1,3 @@
 alias update='sudo apt update;sudo apt upgrade'
-alias root='root -l'
+alias ll='ls -lF'
+alias la='ls -lFa'
