@@ -41,7 +41,17 @@ filetype plugin indent on
 " Prevent // from continuing
 au FileType c,cpp setlocal comments-=:// comments+=f://
 
-" Termdebug, put gdb/output side-by-side with code
+"" Termdebug, put gdb/output side-by-side with code
 packadd termdebug
 let g:termdebug_wide=1
 let g:termdebug_wide=165
+
+"" YCM settings
+" Make YCM cursor-hover popups faster [1000 ms]
+set updatetime=1000
+" Turn off that annoying prompt
+let g:ycm_confirm_extra_conf=0
+
+" clang-format mappings (too low version?)
+"map <C-K> :pyf ~/.vim/clang-format.py<cr>
+"imap <C-K> <c-o>:pyf ~/.vim/clang-format.py<cr>
