@@ -55,3 +55,9 @@ let g:ycm_confirm_extra_conf=0
 " clang-format mappings (too low version?)
 "map <C-K> :pyf ~/.vim/clang-format.py<cr>
 "imap <C-K> <c-o>:pyf ~/.vim/clang-format.py<cr>
+
+" Just can't let go of the shift key, can you?
+command! W :w
+command! Q :q
+command! Wq :wq
+command! WQ :wq
