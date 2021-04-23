@@ -8,3 +8,14 @@
   ui = auto
 [alias]
   slog = log --oneline --topo-order --graph --pretty=format:"%C(yellow)%h\\ %w(70,1,2)%Creset%s%Cblue\\ [%cn]%Cred%d" 
+  spull = '!git pull && git submodule sync --recursive && git submodule update --init --recursive'
+[credential]
+  helper = cache --timeout=3600
+[init]
+  defaultBranch = main
+[status]
+  submoduleSummary = true
+[diff]
+  submodule = log
+[fetch]
+  recurseSubmodules = true
