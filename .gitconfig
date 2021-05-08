@@ -7,9 +7,27 @@
 [color]
   ui = auto
 [alias]
+  # Special log - nice layout that shows branches
   slog = log --oneline --topo-order --graph --pretty=format:"%C(yellow)%h\\ %w(70,1,2)%Creset%s%Cblue\\ [%cn]%Cred%d" 
-  spull = !git pull && git submodule sync --recursive && git submodule update --init --recursive
+  # Pull current (or specified origin and) branch; sync/update submodules
+  spull = "!f() { \
+    git pull $1 $2; \
+    git submodule sync --recursive; \
+    git submodule update --init --recursive; \
+    }; f"
+  # Remove a submodule completely
+  srm = "!f() { \
+    git submodule deinit $1; \
+    git rm $1; \
+    rm -rf .git/modules/$1; \
+    }; f"
+  # Get detailed submodule commit hash status information
   sstatus = submodule status
+  # Set the specified local branch to track the origin branch, so we can
+  # "git pull" and "git push" branches without specifying the origin
+  btrack = "!f() { \
+    git branch --set-upstream-to=origin/$1 $1; \
+    }; f"
 [credential]
   helper = cache --timeout=3600
 [init]
