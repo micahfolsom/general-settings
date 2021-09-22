@@ -47,10 +47,15 @@ let g:termdebug_wide=1
 let g:termdebug_wide=165
 
 "" YCM settings
-" Make YCM cursor-hover popups faster [1000 ms]
-set updatetime=1000
+" Make YCM cursor-hover popups faster [ms]
+set updatetime=2000
 " Turn off that annoying prompt
 let g:ycm_confirm_extra_conf=0
+" Fix error background highlighting to be less offensive
+let g:ycm_enable_diagnostic_signs=1
+highlight YcmErrorSection ctermbg=0
+" Don't open split window preview
+set completeopt-=preview
 
 " clang-format mappings (too low version?)
 "map <C-K> :pyf ~/.vim/clang-format.py<cr>
