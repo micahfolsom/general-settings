@@ -36,7 +36,5 @@
   submoduleSummary = true
 [diff]
   submodule = log
-[fetch]
-  recurseSubmodules = true
 [pull]
   rebase = merges
