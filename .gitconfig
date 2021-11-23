@@ -11,14 +11,14 @@
   slog = log --oneline --topo-order --graph --pretty=format:"%C(yellow)%h\\ %w(70,1,2)%Creset%s%Cblue\\ [%cn]%Cred%d" 
   # Pull current (or specified origin and) branch; sync/update submodules
   spull = "!f() { \
-    git pull $1 $2; \
+    git pull --jobs 8 $1 $2; \
     git submodule sync --recursive; \
-    git submodule update --init --recursive; \
+    git submodule update --init --recursive --checkout; \
     }; f"
   # Remove a submodule completely
   srm = "!f() { \
     git submodule deinit $1; \
-    git rm $1; \
+    git rm --cached $1; \
     rm -rf .git/modules/$1; \
     }; f"
   # Get detailed submodule commit hash status information
