@@ -62,7 +62,9 @@ set completeopt-=preview
 "imap <C-K> <c-o>:pyf ~/.vim/clang-format.py<cr>
 
 " Just can't let go of the shift key, can you?
-command! W :w
-command! Q :q
-command! Wq :wq
-command! WQ :wq
+:command W w
+:command Q q
+:command Wq wq
+:command WQ wq
+" I use this a lot
+:command NN set nonumber
