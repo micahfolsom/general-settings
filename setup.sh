@@ -27,6 +27,8 @@ echo \
 sudo apt update
 sudo apt-get install docker-ce docker-ce-cli containerd.io \
   docker-compose-plugin
+sudo groupadd docker || true
+sudo usermod -aG docker $USER
 
 # Copy vim config files
 printf "Setting up vim config...\n"
