@@ -7,13 +7,29 @@ set -e
 printf "Installing basic packages...\n"
 sudo apt update
 sudo apt install vim git build-essential cmake curl python3-dev \
-  python-is-python3 python3-pip openssh-server
+  python-is-python3 python3-pip openssh-server wget gpg
 
 # Install Chrome
-# TODO
+printf "Installing Google Chrome...\n"
+cd $HOME/Downloads
+wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+sudo dpkg -i google-chrome-stable_current_amd64.deb
+rm -f google-chrome-stable_current_amd64.deb
+cd $HOME
 
 # Install VSCode
-# TODO
+# https://code.visualstudio.com/docs/setup/linux
+printf "Installing VS Code...\n"
+cd $HOME/Downloads
+wget -qO- https://packages.microsoft.com/keys/microsoft.asc \
+  | gpg --dearmor > packages.microsoft.gpg
+sudo install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/
+sudo sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
+rm -f packages.microsoft.gpg
+sudo apt install apt-transport-https
+sudo apt update
+sudo apt install code
+cd $HOME
 
 # Install docker
 # https://docs.docker.com/engine/install/ubuntu/

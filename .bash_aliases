@@ -1,5 +1,5 @@
 alias update='sudo apt update;sudo apt upgrade -y'
-alias ls='ls -lFah'
+alias ls='ls -lFah --color=auto'
 
 # Docker cleanup stopped containers and delete dangling images
 docker-clean() {
