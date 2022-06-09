@@ -6,51 +6,23 @@ set -e
 # Install helpful things
 printf "Installing basic packages...\n"
 sudo apt update
-sudo apt install vim git build-essential cmake curl python3-dev \
+sudo apt install -y vim git build-essential cmake curl python3-dev \
   python-is-python3 python3-pip openssh-server wget gpg
 
-# Install Chrome
-printf "Installing Google Chrome...\n"
-cd $HOME/Downloads
-wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-sudo dpkg -i google-chrome-stable_current_amd64.deb
-rm -f google-chrome-stable_current_amd64.deb
-cd $HOME
+# Install chrome
+./install_chrome.sh
 
 # Install VSCode
-# https://code.visualstudio.com/docs/setup/linux
-printf "Installing VS Code...\n"
-cd $HOME/Downloads
-wget -qO- https://packages.microsoft.com/keys/microsoft.asc \
-  | gpg --dearmor > packages.microsoft.gpg
-sudo install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/
-sudo sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
-rm -f packages.microsoft.gpg
-sudo apt install apt-transport-https
-sudo apt update
-sudo apt install code
-cd $HOME
+./install_vscode.sh
 
 # Install docker
-# https://docs.docker.com/engine/install/ubuntu/
-printf "Installing docker...\n"
-sudo apt install ca-certificates gnupg lsb-release
-sudo mkdir -p /etc/apt/keyrings
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-echo \
-  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
-  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-sudo apt update
-sudo apt-get install docker-ce docker-ce-cli containerd.io \
-  docker-compose-plugin
-sudo groupadd docker || true
-sudo usermod -aG docker $USER
+./install_docker.sh
 
 # Copy vim config files
 printf "Setting up vim config...\n"
+cd $HOME/repos/general-settings
 cp -r .vim $HOME
 cp .vimrc $HOME
-# TODO: open vim so it does plugin setup, then run YouCompleteMe installer?
 
 # Fonts
 printf "Copying fonts...\n"
